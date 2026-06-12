@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+  <title>Document</title>
+</head>
+
+<body>
+  
+  <div class="container">
+    <h4 class="text-center display-1">
+      TOP 100 CRYPTO COINS...
+    </h4>
+    <nav aria-label="breadcrumb" class="mb=5">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="index.html" class="text-black">Home</a>
+        </li>
+        <li class="breadcrumb-item text-black active" aria-current="page">
+          Coins
+        </li>
+      </ol>
+    </nav>
+    <table class="table table-striped table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Current Price</th>
+          <th>High In 24h</th>
+          <th>Low IN 24h</th>
+          <th>Price Change 24h</th>
+          <th>Price Change 24h (%)</th>
+          <th>Total Volume</th>
+        </tr>
+      </thead>
+
+      <tbody id="cryptocoins">
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    async function Fetchcrypto() {
+      let data = await (
+        await fetch(
+          "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false "
+        )
+      ).json();
+      console.log(data);
+      for (let i = 0; i < data.length; i++) {
+        document.getElementById("cryptocoins").innerHTML += `       
+        <tr>
+          <td>${i + 1}.</td>
+          <td>
+           <img src="${data[i].image}" alt=""width="30px"><b>&nbsp; ${data[i]["name"]}</b>
+          </td>
+
+          <td>${data[i]["current_price"]}$</td>
+          <td>${data[i]["high_24h"]}$</td>
+          <td>${data[i]["low_24h"]}$</td>
+
+          <td class="${data[i]["price_change_24h"] > 0 ? 'text-success' : 'text-danger'}"> ${data[i]["price_change_24h"]}$</td>
+
+          <td class="${data[i]["price_change_percentage_24h"] > 0 ? 'text-success' : 'text-danger'}">${data[i]["price_change_percentage_24h"]}%</td>
+
+          <td>${data[i]["total_volume"]}$</td>
+        </tr>
+                `;
+      }
+    }
+
+    Fetchcrypto();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.j"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
+
+</body>
+
+</html>
